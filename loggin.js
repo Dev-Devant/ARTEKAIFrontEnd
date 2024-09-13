@@ -193,7 +193,7 @@ function handleSubmit(e) {
     
     if (state.isLogin) {        
         login(email, password)
-        //* debuggin
+        /* debuggin
         state.isLoggedIn = true;
         state.user = {
           name: "PAco",
