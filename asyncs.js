@@ -1,0 +1,314 @@
+const server = "http://127.0.0.1:5000"
+
+// Función para realizar una solicitud POST
+async function postData(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data), 
+  });
+  return await response.json(); 
+}
+// Función para realizar una solicitud GET
+
+async function getData(url = "") {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    // Maneja el caso cuando la respuesta no es exitosa
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+// Función para realizar login
+async function login(username, password) {
+  const url = "http://127.0.0.1:5000/api/login"; // Ruta de la API para login
+  const data = { username, password }; // Datos a enviar en la solicitud POST
+
+  try {
+    const response = await postData(url, data);
+    if (response.Email) {
+      localStorage.setItem('SessionKey', response.SessionKey)
+      state.isLoggedIn = true;
+        state.user = {
+          name: response.UserName,
+          email: `${response.Email}`,
+          tokens: response.Tokens,
+          avatar: "Avatar.png?height=32&width=32",
+          language: state.language,
+          country: "United States",
+          voice: "voice1",
+        };
+        state.slideDisplay = false;
+        state.mainMenuOpen = true;
+        render()
+      return false    
+    } else {
+      console.log("Error en la respuesta del servidor:", response.error);
+    }
+  } catch (error) {
+    console.error("Error al realizar la solicitud (login):", error);
+  }
+  return true
+}
+
+
+// Función para realizar registro
+async function register(username, password,newsletter) {
+  const url = server+"/api/register";
+  const data = { username, password ,newsletter}; 
+  try {
+    const response = await postData(url, data);
+    if (response.message) {  
+      localStorage.setItem('SessionKey', response.SessionKey)
+      state.isLoggedIn = true;
+      state.user = {
+          name: response.UserName,
+          email: response.Email,
+          tokens: response.Tokens,
+          avatar: 'Avatar.png?height=32&width=32',
+          language: state.language,
+          country: 'United States',
+          voice: 'voice1',
+          newsletterSubscribed: newsletter
+      };
+      state.slideDisplay = false;
+      state.mainMenuOpen = true;
+      render();
+      return false
+    }
+
+  } catch (error) {
+    console.error("Error al realizar la solicitud (register):", error);
+  }
+  return true
+}
+
+
+async function checkSession(SessionKey) {
+  const url = server+"/api/session"; 
+  const data = { SessionKey };
+
+  try {
+    const response = await postData(url, data);
+    if (response.SessionKey) {
+      state.isLoggedIn = true;
+      state.user = {
+          name: response.UserName,
+          email: response.Email,
+          tokens: response.Tokens,
+          avatar: 'Avatar.png?height=32&width=32',
+          language: state.language,
+          country: 'Argentina',
+          voice: 'voice1'
+      };
+      const filter = removeFormatting(response.IAResp.toString())
+      const format = formatMessage(response.IAResp.toString())
+      state.chatMessages.push({ sender: 'Artek AI', message: format});
+
+      state.slideDisplay = false;
+      state.mainMenuOpen = true;
+      render()
+    } else {
+       console.log("Error en la respuesta del servidor:", response.error);
+    }
+  } catch (error) {
+    console.error("Error al realizar la solicitud (sessioncheck):", error);
+  }
+}
+
+// Función para enviar un chat
+async function chatter(Chat) {
+  const url = server+"/api/ChatRequest"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const data = { sessionKey, Chat }; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {         
+
+        const format = formatMessage(response.IAResp.toString())
+        const actions = ActionsDetector(format)
+        const filter = removeFormatting(response.IAResp.toString())
+        stopVoice()
+        InterpreterVoice(filter)
+        let ensambler = '<pre style="white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; max-width: 100%;">' + format + '</pre>'
+        ensambler += actions
+        state.chatMessages.push({ sender: 'Artek AI', message: ensambler});
+        render()
+        return false
+      } else {
+          console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+  return true
+}
+
+async function getCourses() {
+  const url = server+"/api/ownCourses"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const data = { sessionKey }; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {   
+        
+        const courseDataGet = response.courseList
+
+        let dataMined = []
+        courseDataGet.forEach(course => {
+          var cnt  = 0
+          for (var i = 0;i<course.enrroledDAta.temas.length;i++){
+            if(course.enrroledDAta.temas[i]){
+              cnt ++
+            }else{break}
+
+          }
+          const progress = cnt/course.enrroledDAta.temas.length
+            const dataLoad = {
+              'ID': course.ID,
+              'title': course.title,        
+              'tags': course.tags,         
+              'description': formatMessage(course.description.toString()),
+              'overview': course.overview,
+              'content': course.content,
+              'enroledData': course.enrroledDAta,
+              'progress': progress
+            }
+            dataMined.push(dataLoad);
+        });
+
+        courses = dataMined
+        render()
+
+      } else {
+        console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+}
+
+async function reExplainRequest(textToReexplain) {
+  const url = server+"/api/reExplain"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const data = { sessionKey, textToReexplain }; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {         
+
+        const format = formatMessage(response.IAResp.toString())
+        const filter = removeFormatting(response.IAResp.toString())
+
+        stopVoice()
+        InterpreterVoice(filter)
+        let ensambler = '<pre style="white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; max-width: 100%;">' + format + '</pre>'
+        state.chatMessages.push({ sender: 'Artek AI', message: ensambler});
+        render()
+        return false
+      } else {
+          console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+  return true
+}
+
+async function sendTask(solve) {
+  const url = server+"/api/taskSubmit"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const task = slides[state.currentSlide].content
+  const data = { sessionKey,task, solve }; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {         
+
+        if (response.past){
+            // aca lo dejo pasar
+        }
+        const format = formatMessage(response.IAResp.toString())
+        const filter = removeFormatting(response.IAResp.toString())
+        InterpreterVoice(filter)
+        state.chatMessages.push({ sender: 'Artek AI', message: format});
+        render()
+        return false
+      } else {
+          console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+  return true
+}
+async function RequestCreate(instructions) {
+  const url = server+"/api/CreateCourseFromUser"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const data = { sessionKey , instructions}; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {         
+        searchingCourses()
+      } else {
+          console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+}
+
+async function logOutSession(SessionKey) {
+  const url = server+"/api/logout"; 
+  const data = { SessionKey }; 
+
+  try {
+    const response = await postData(url, data);
+    if (response.message) {
+      location.reload(true);          
+    } else {
+       console.log("Error en la respuesta del servidor:", response.error);
+    }
+  } catch (error) {
+    console.error("Error al realizar la solicitud (sessioncheck):", error);
+  }
+}
+
+// Función para obtener los pagos usando POST
+async function getPayments() {
+  const url = `${server}/mlPayments`; 
+  const data = {}; 
+
+  try {
+    const response = await postData(url, data);
+    if (Array.isArray(response)) {
+      console.log('Pagos recibidos:', response);
+
+
+
+    } else {
+      console.error('La respuesta no es una lista de pagos:', response);
+    }
+  } catch (error) {
+    console.error('Error al obtener los pagos:', error);
+  }
+}
+
+
+window.login = login;
+window.register = register;
+window.checkSession = checkSession;
+window.chatter = chatter;
+window.logOutSession =logOutSession ;
+window.getPayments = getPayments;
