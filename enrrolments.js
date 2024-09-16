@@ -342,9 +342,9 @@ function loadCourse(){
     state.mainMenuOpen = false
     state.slideDisplay = true
     state.creatingmode = false
-    
+    state.currentCourseId = course.ID
     state.courseSelectorMode = false
-    state.chatWidth = window.innerWidth *0.3
+    state.chatWidth = window.innerWidth *0.4
     // reset chat
 
     state.chatMessages = []
@@ -364,7 +364,8 @@ function loadCourse(){
             unit: '',   
             content: resumen,
             color : '#07295f',
-            task: false
+            task: false,
+            completed: false
         })
         for (var j = 0 ; j< temas.length ;j++){            
             slides.push({
@@ -372,14 +373,16 @@ function loadCourse(){
                 unit: temas[j].Tema,   
                 content: formatMessage(temas[j].explicacion.toString()),
                 color : '#042a2b',
-                task: false
+                task: false,
+                completed: course.enroledData.temas[j]
             })
             slides.push({
                 Module: module,
                 unit: temas[j].Tema,   
                 content: formatMessage(temas[j].ejemplo.toString()),
                 color : '#042a2b',
-                task: false
+                task: false,
+                completed: course.enroledData.temas[j]
             })
             slides.push({
                 Module: module,
@@ -388,7 +391,8 @@ function loadCourse(){
                     Usa el chat para subir tu tarea.                
                 `,
                 color : '#183e51',
-                task: true
+                task: true,
+                completed: course.enroledData.temas[j]
             })
         }
         

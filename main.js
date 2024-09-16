@@ -29,10 +29,12 @@ const languages = [
 let courses = [];
 
 let state = {
+    validatedAndAbilitadedUser : false,
     creatingmode : true,
     courseSelectorMode: false,
     currentChat :"",
     currentCourseoverview: '',
+    currentCourseId:'',
     CursingNow: {},
     isLoggedIn: false,
     isLogin: true,
@@ -178,10 +180,3 @@ document.addEventListener('click', (e) => {
     }
 });
 
-module.exports = {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  };
-  

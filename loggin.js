@@ -103,8 +103,9 @@ function createLoginForm() {
         type="submit"
         class="w-full bg-[#4bc6ff] text-[#08090A] py-2 px-4 rounded-md hover:bg-[#2493d4] transition-colors"
         >
-        ${state.isLogin ? translations[state.language]?.loginButton || 'Login' : translations[state.language]?.createAccountButton || 'Create Account'}
-    </button>
+            ${state.isLogin ? translations[state.language]?.loginButton || 'Login' : translations[state.language]?.createAccountButton || 'Create Account'}
+        </button>
+        
     `;
     
     // Google Auth button
@@ -146,6 +147,18 @@ function createLoginForm() {
 </button>
 
     `;
+
+    // forgot pass
+        const forgotPass = `
+        <br>
+        <button
+        id="forgotPass"
+        class="text-[#4bc6ff] hover:underline focus:outline-none"
+    >
+        Contraseña olvidada
+    </button>
+    
+        `;
     
     // Final composition
     form.innerHTML = `
@@ -165,6 +178,7 @@ function createLoginForm() {
             </div>
             <div class="mt-4 text-center">
                 ${toggleAuthButton}
+                ${forgotPass}
             </div>
         </div>
 
@@ -178,11 +192,19 @@ function createLoginForm() {
         render();
     });
     form.querySelector('#language').addEventListener('change', handleLanguageChange);
-
+    form.querySelector('#forgotPass').addEventListener('click', () => {
+        const email = document.getElementById('email').value
+        resetPassrequest(email)
+    });
 
     return form;
 }
+
+
 function handleLanguageChange(event) {
+    if(event.target.value == null){
+        return
+    }
     state.language = event.target.value;
     render()
 }

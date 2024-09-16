@@ -1,6 +1,11 @@
 
 
 function nextSlide() {
+
+    if(slides[state.currentSlide].task && !slides[state.currentSlide].completed){
+        return
+    }
+
     state.currentSlide = (state.currentSlide + 1);
     stopVoice()
     if(state.currentSlide >= slides.length){
@@ -12,6 +17,8 @@ function nextSlide() {
         InterpreterVoice(filter)
 
     }
+
+    state.CursingNow.progress = (state.currentSlide / slides.length).toFixed(2)*100;
     render();
 }
 
@@ -40,3 +47,4 @@ function repeatSlide() {
 function reExplain() {
     reExplainRequest(slides[state.currentSlide].content)
 }
+

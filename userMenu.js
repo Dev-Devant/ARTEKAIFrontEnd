@@ -60,7 +60,7 @@ function createUserMenu() {
          </button>
     `
   return `<div class="absolute right-0 mt-2 w-48 bg-[#042a2b] rounded-md shadow-lg py-1 ring-1 ring-[#68696e] ring-opacity-5 z-50" style = "z-index : 2;">`
-        + languageButton + certifyButton + logoutButton +
+     + certifyButton + logoutButton +
     `</div>`;
 }
 
@@ -286,10 +286,8 @@ function handleLogout() {
     state.isLogin = true;
     state.chatMessages = [];
     state.isUserMenuOpen = false;
-    const sessionKey = localStorage.getItem('SessionKey')
-    if(sessionKey != null){  
-        logOutSession(SessionKey);
-    }
+    logOutSession(localStorage.getItem('SessionKey'));
+
     render();
 }
 

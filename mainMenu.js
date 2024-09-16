@@ -222,6 +222,25 @@ function createMainMenu() {
         </button>
     `;*/
 
+
+    let warnning = `
+        <div style = "z-index : 2;" class="course-details active" style="flex: 2; padding-left: 2rem; background-color: #042a2b; border: 2px solid #4bc6ff;">
+            <h1 style="color:" class = "text-gray-700">contactar a administrador</h1>
+            <p style="color: white;font-size: 13px;">recuerde validad su cuenta primero</p>
+            <p style="color: white;font-size: 14px;"><br>contacto:</p>
+            <p style="color: white;font-size: 11px;">contact@artektechnologies</p>
+        </div>
+     `
+
+     if(state.validatedAndAbilitadedUser){
+        warnning = `<div style="display: flex; gap: 1rem; justify-content: center; align-items: center; width: 100%;">
+                    ${createButton}
+                    ${continueButton}
+                    ${askButton}
+                    ${buttonStyle}                    
+                </div>`
+     }
+     
     const bottomLine = `
         </div>
         <div class="bg-[#042a2b] text-[#68696e] p-2 text-center border-t border-[#68696e]" style="position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;">
@@ -241,25 +260,34 @@ function createMainMenu() {
     `;
 
     menu.innerHTML = header + `
-<div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1;">
-    ${videoBackground}
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; height: 100%; width: 100%; padding-top: 2rem;">
-        <h1 class="text-4xl font-bold mb-8" style = "z-index: 2;">Bienvenido!</h1>
-        <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; width: 100%;">
-            ${createButton}
-            ${continueButton}
-            ${askButton}
-            ${buttonStyle}
+        <div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1;">
+            ${videoBackground}
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; height: 100%; width: 100%; padding-top: 2rem;">
+                <h1 class="text-4xl font-bold mb-8" style = "z-index: 2;">Bienvenido!</h1>
+                `
+                +   `${warnning}`        +
+                
+                `                
+                ${bottomLine}
+            </div>
         </div>
-        ${bottomLine}
-    </div>
-</div>
 
     `;
+
+
+    if(state.validatedAndAbilitadedUser){
+        menu.querySelector('#createCourse').addEventListener('click', createCourse);
+        menu.querySelector('#continueCourse').addEventListener('click', searchingCourses);
+    }
     menu.querySelector('#userMenuButton').addEventListener('click', toggleUserMenu);
-    menu.querySelector('#createCourse').addEventListener('click', createCourse);
-    menu.querySelector('#continueCourse').addEventListener('click', searchingCourses);
+    
     //menu.querySelector('#getHelp').addEventListener('click', consultant);
+    menu.querySelector('#bugReport').addEventListener('click', handleBugReport);
+
+    if(state.isUserMenuOpen){
+        menu.querySelector('#logout').addEventListener('click', handleLogout);
+    }
+  
 
     return menu
 }

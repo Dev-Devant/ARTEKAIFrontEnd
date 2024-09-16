@@ -29,7 +29,7 @@ async function getData(url = "") {
 
 // Función para realizar login
 async function login(username, password) {
-  const url = "http://127.0.0.1:5000/api/login"; // Ruta de la API para login
+  const url = server +"/api/login"; // Ruta de la API para login
   const data = { username, password }; // Datos a enviar en la solicitud POST
 
   try {
@@ -48,6 +48,9 @@ async function login(username, password) {
         };
         state.slideDisplay = false;
         state.mainMenuOpen = true;
+        if(response.Level > 0){
+          state.validatedAndAbilitadedUser = true
+        }
         render()
       return false    
     } else {
@@ -109,12 +112,14 @@ async function checkSession(SessionKey) {
           country: 'Argentina',
           voice: 'voice1'
       };
-      const filter = removeFormatting(response.IAResp.toString())
       const format = formatMessage(response.IAResp.toString())
       state.chatMessages.push({ sender: 'Artek AI', message: format});
 
       state.slideDisplay = false;
       state.mainMenuOpen = true;
+      if(response.Level > 0){
+        state.validatedAndAbilitadedUser = true
+      }
       render()
     } else {
        console.log("Error en la respuesta del servidor:", response.error);
@@ -173,7 +178,7 @@ async function getCourses() {
             }else{break}
 
           }
-          const progress = cnt/course.enrroledDAta.temas.length
+          const progress = (cnt/course.enrroledDAta.temas.length)*100
             const dataLoad = {
               'ID': course.ID,
               'title': course.title,        
@@ -190,6 +195,23 @@ async function getCourses() {
         courses = dataMined
         render()
 
+      } else {
+        console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+}
+
+async function updateCourseTraker(courseId,seen) {
+  const url = server+"/api/courseEnrrolData"; 
+  const sessionKey = localStorage.getItem('SessionKey')
+  const data = { sessionKey,courseId,seen }; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {   
+      
       } else {
         console.log("Error en la respuesta del servidor:", response.error);
       }
@@ -234,14 +256,26 @@ async function sendTask(solve) {
   try {
       const response = await postData(url, data);
       if (response.message) {         
-
-        if (response.past){
-            // aca lo dejo pasar
-        }
         const format = formatMessage(response.IAResp.toString())
         const filter = removeFormatting(response.IAResp.toString())
         InterpreterVoice(filter)
         state.chatMessages.push({ sender: 'Artek AI', message: format});
+        if(response.past){
+          slides[state.currentSlide].completed = true
+          state.currentSlide += 1
+          updateCourseTraker(state.currentCourseId)
+          if(state.currentSlide >= slides.length){
+            state.currentSlide = 0
+            slides = []
+            slides.push({
+              Module: 'module',
+              unit: '',   
+              content: 'Has terminado! puedes ir a tu certificacion',
+              color : '#07295f',
+              task: false
+            })
+          }
+        }
         render()
         return false
       } else {
@@ -261,6 +295,7 @@ async function RequestCreate(instructions) {
       const response = await postData(url, data);
       if (response.message) {         
         searchingCourses()
+        state.user.tokens = response.tokens
       } else {
           console.log("Error en la respuesta del servidor:", response.error);
       }
@@ -285,6 +320,22 @@ async function logOutSession(SessionKey) {
   }
 }
 
+async function resetPassrequest(email) {
+  const url = server+"/api/resetPass"; 
+  const data = {email}; 
+
+  try {
+      const response = await postData(url, data);
+      if (response.message) {         
+        console.log("verifica tu correo:", response.message);
+      } else {
+        console.log("Error en la respuesta del servidor:", response.error);
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+  }
+}
+
 // Función para obtener los pagos usando POST
 async function getPayments() {
   const url = `${server}/mlPayments`; 
@@ -304,11 +355,3 @@ async function getPayments() {
     console.error('Error al obtener los pagos:', error);
   }
 }
-
-
-window.login = login;
-window.register = register;
-window.checkSession = checkSession;
-window.chatter = chatter;
-window.logOutSession =logOutSession ;
-window.getPayments = getPayments;

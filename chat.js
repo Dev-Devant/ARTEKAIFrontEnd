@@ -311,6 +311,8 @@ function createMainInterface() {
 function goBack(){
     state.mainMenuOpen = true
     state.courseSelectorMode = false
+    state.chatWidth= window.innerWidth *0.95,
+
     stopVoice()
     render()
 }
@@ -321,7 +323,7 @@ function handleConversations(event){
 }
 
 function handleBugReport(){
-    window.open('https://forms.gle/Le2fUs3dxdbSUT2eA', '_blank');
+    window.open('https://forms.gle/GbqgQmvcEvmW4Vyn8', '_blank');
             /// to debug //////////////////////////////
             state.slideDisplay = true
             state.chatWidth = window.innerWidth * 0.3
