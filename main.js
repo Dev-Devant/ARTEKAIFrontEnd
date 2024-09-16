@@ -178,3 +178,10 @@ document.addEventListener('click', (e) => {
     }
 });
 
+module.exports = {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  };
+  
