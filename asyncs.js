@@ -35,7 +35,7 @@ async function login(username, password) {
   try {
     const response = await postData(url, data);
     if (response.Email) {
-      localStorage.setItem('SessionKey', String(response.SessionKey))
+      localStorage.setItem('SessionKey', response.SessionKey)
       state.isLoggedIn = true;
         state.user = {
           name: response.UserName,
@@ -70,7 +70,7 @@ async function register(username, password,newsletter) {
   try {
     const response = await postData(url, data);
     if (response.message) {  
-      localStorage.setItem('SessionKey', String(response.SessionKey))
+      localStorage.setItem('SessionKey', response.SessionKey)
       state.isLoggedIn = true;
       state.user = {
           name: response.UserName,
@@ -160,7 +160,7 @@ async function chatter(Chat) {
 
 async function getCourses() {
   const url = server+"/api/ownCourses"; 
-  const sessionKey = String(localStorage.getItem('SessionKey'))
+  const sessionKey = localStorage.getItem('SessionKey')
   const data = { sessionKey }; 
 
   try {
@@ -205,7 +205,7 @@ async function getCourses() {
 
 async function updateCourseTraker(courseId,seen) {
   const url = server+"/api/courseEnrrolData"; 
-  const sessionKey = String(localStorage.getItem('SessionKey'))
+  const sessionKey = localStorage.getItem('SessionKey')
   const data = { sessionKey,courseId,seen }; 
 
   try {
@@ -222,7 +222,7 @@ async function updateCourseTraker(courseId,seen) {
 
 async function reExplainRequest(textToReexplain) {
   const url = server+"/api/reExplain"; 
-  const sessionKey = String(localStorage.getItem('SessionKey'))
+  const sessionKey = localStorage.getItem('SessionKey')
   const data = { sessionKey, textToReexplain }; 
 
   try {
@@ -249,7 +249,7 @@ async function reExplainRequest(textToReexplain) {
 
 async function sendTask(solve) {
   const url = server+"/api/taskSubmit"; 
-  const sessionKey = String(localStorage.getItem('SessionKey'))
+  const sessionKey = localStorage.getItem('SessionKey')
   const task = slides[state.currentSlide].content
   const data = { sessionKey,task, solve }; 
 
@@ -288,7 +288,7 @@ async function sendTask(solve) {
 }
 async function RequestCreate(instructions) {
   const url = server+"/api/CreateCourseFromUser"; 
-  const sessionKey = String(localStorage.getItem('SessionKey'))
+  const sessionKey = localStorage.getItem('SessionKey')
   const data = { sessionKey , instructions}; 
 
   try {
