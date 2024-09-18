@@ -1,4 +1,4 @@
-const server = "https://artekaimogo-production.up.railway.app:8080"
+const server = "https://artekaimogo-production.up.railway.app"
 
 // Función para realizar una solicitud POST
 async function postData(url = "", data = {}) {
