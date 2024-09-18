@@ -37,7 +37,7 @@ function createUserMenu() {
     `
     const certifyButton = `
         <a
-            href="https://example.com" 
+            href="https://dev-devant.github.io/CertifyFRont/" 
             target="_blank" 
             class="block"
         >
