@@ -67,7 +67,7 @@ let state = {
 };
 /////////// starting logic
 if (localStorage.getItem('SessionKey')) {
-    var currentKey = String(localStorage.getItem('SessionKey'));
+    var currentKey = localStorage.getItem('SessionKey');
     checkSession(currentKey)
     console.log(currentKey)
 } 
