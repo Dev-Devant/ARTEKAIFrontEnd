@@ -36,8 +36,6 @@ async function login(username, password) {
     const response = await postData(url, data);
     if (response.Email) {
       localStorage.setItem('SessionKey', response.SessionKey)
-      console.log(response.SessionKey)
-      console.log(localStorage.getItem('SessionKey'))
       state.isLoggedIn = true;
         state.user = {
           name: response.UserName,

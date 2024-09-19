@@ -69,7 +69,6 @@ let state = {
 if (localStorage.getItem('SessionKey')) {
     var currentKey = localStorage.getItem('SessionKey');
     checkSession(currentKey)
-    console.log(currentKey)
 } 
 function render() {
     const app = document.getElementById('app');
