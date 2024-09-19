@@ -294,7 +294,6 @@ async function RequestCreate(instructions) {
   try {
       const response = await postData(url, data);
       if (response.message) {    
-        console.log(response.message)     
         searchingCourses()
         state.user.tokens = response.tokens
       } else {
