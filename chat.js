@@ -110,7 +110,7 @@ function createMainInterface() {
                     >
                     <div class="absolute inset-0 bg-gradient-to-br from-transparent to-[#2493d4] opacity-20"></div>
                     
-                    <div class="relative z-10 text-left" style="max-width: 90%; overflow: hidden; word-wrap: break-word; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; margin-left: 10px;">
+                    <div class="relative z-10 text-left" style="max-width: 90%;  word-wrap: break-word; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; margin-left: 10px;">
                         <h1 class="text-2xl font-bold mb-2 text-[#4bc6ff]" style="margin: 0; word-wrap: break-word;">${slides[state.currentSlide].Module}</h1>
                         <h2 class="text-xl font-semibold mb-4 text-[#a1a1a1]" style="margin: 0; word-wrap: break-word;">${slides[state.currentSlide].unit}</h2>
                         <br><br>
