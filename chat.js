@@ -442,7 +442,6 @@ function ActionsDetector(text) {
 function handleCommand(action, text) {
     disableButton()
     const result = RequestCreate(text)
-
     if (!result){
         resetButton()
     }
@@ -450,14 +449,14 @@ function handleCommand(action, text) {
 
 function disableButton() {
     const button = document.getElementById('actionButton');
-    button.style.backgroundColor = 'gray'; // Cambia el color de fondo a gris
-    button.innerText = 'Creando'; // Cambia el texto a "Creando"
-    button.disabled = true; // Desactiva el botón
+    button.style.backgroundColor = 'gray'; 
+    button.innerText = 'Creando'; 
+    button.disabled = true; 
 }
 
 function resetButton() {
     const button = document.getElementById('actionButton');
-    button.style.backgroundColor = '#4bc6ff'; // Vuelve al color original
-    button.innerText = '${action}'; // Restaura el texto original
-    button.disabled = false; // Reactiva el botón
+    button.style.backgroundColor = '#4bc6ff'; 
+    button.innerText = '${action}'; 
+    button.disabled = false;
 }
