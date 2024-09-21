@@ -282,9 +282,9 @@ function createCourseList(courses) {
                 </div>
                 <div style="width: 80px; height: 80px; position: relative;">
                     <svg viewBox="0 0 36 36" style="transform: rotate(-90deg); width: 100%; height: 100%;">
-                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4bc6ff" stroke-width="2" stroke-dasharray="${course.progress}, 100"/>
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4bc6ff" stroke-width="2" stroke-dasharray="${course.progress.toFixed(2)}, 100"/>
                     </svg>
-                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; font-weight: bold; color: #4bc6ff;">${course.progress}%</span>
+                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; font-weight: bold; color: #4bc6ff;">${course.progress.toFixed(2)}%</span>
                 </div>
             </div>
         `;
@@ -305,9 +305,9 @@ function createCourseOverview() {
             <p style="color: white;font-size: 11px;">${course.tags}</p>
             <div style="width: 80px; height: 80px; position: relative;">
                 <svg viewBox="0 0 36 36" style="transform: rotate(-90deg); width: 100%; height: 100%;">
-                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4bc6ff" stroke-width="2" stroke-dasharray="${course.progress}, 100"/>
+                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4bc6ff" stroke-width="2" stroke-dasharray="${course.progress.toFixed(2)}, 100"/>
                 </svg>
-                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; font-weight: bold; color: #4bc6ff;">${course.progress}%</span>
+                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; font-weight: bold; color: #4bc6ff;">${course.progress.toFixed(2)}%</span>
             </div>
             <button
                 id="loadCourseButton"
