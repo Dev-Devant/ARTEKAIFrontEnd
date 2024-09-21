@@ -296,11 +296,14 @@ async function RequestCreate(instructions) {
       if (response.message) {    
         searchingCourses()
         state.user.tokens = response.tokens
+        return true;
       } else {
-          console.log("Error en la respuesta del servidor:", response.error);
+        console.log("Error en la respuesta del servidor:", response.error);
+        return false
       }
   } catch (error) {
       console.error("Error al realizar la solicitud :", error);
+      return false
   }
 }
 

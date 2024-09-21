@@ -432,12 +432,32 @@ function ActionsDetector(text) {
     const action = 'Crear';
     const escapedText = encodeURIComponent(text); // Codificar el texto
     return `<button 
-            style="background-color: #4bc6ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
-            onclick="handleCommand('${action}', decodeURIComponent('${escapedText}'))">${action}
-        </button>`;
+        id="actionButton"
+        style="background-color: #4bc6ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+        onclick="handleCommand('${action}', decodeURIComponent('${escapedText}'))">
+        ${action}
+    </button>`;
 }
 
 function handleCommand(action, text) {
-    RequestCreate(text)
+    disableButton()
+    const result = RequestCreate(text)
+
+    if (!result){
+        resetButton()
+    }
 }
 
+function disableButton() {
+    const button = document.getElementById('actionButton');
+    button.style.backgroundColor = 'gray'; // Cambia el color de fondo a gris
+    button.innerText = 'Creando'; // Cambia el texto a "Creando"
+    button.disabled = true; // Desactiva el botón
+}
+
+function resetButton() {
+    const button = document.getElementById('actionButton');
+    button.style.backgroundColor = '#4bc6ff'; // Vuelve al color original
+    button.innerText = '${action}'; // Restaura el texto original
+    button.disabled = false; // Reactiva el botón
+}
