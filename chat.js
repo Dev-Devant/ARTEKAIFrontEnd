@@ -88,7 +88,7 @@ function createMainInterface() {
         </style>
 `
     let videoBackground = ``
-        if(state.bakgroundPlay){
+    if(state.bakgroundPlay){
         videoBackground = `
             <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"> 
                 <source src="backgroundB.mp4" type="video/mp4">
@@ -275,7 +275,7 @@ function createMainInterface() {
         </div>
         `
     main.innerHTML = header + `<div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1;">` 
-        + /*videoBackground*/ + slider + chater + botomLine + `            
+         + slider + chater + botomLine + `            
             ${state.showBillingMenu ? createBillingMenu() : ''}
             ${state.showConfigurationMenu ? createConfigurationMenu() : ''}
     `;
