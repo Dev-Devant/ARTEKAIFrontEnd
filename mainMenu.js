@@ -261,7 +261,9 @@ function createMainMenu() {
 
     menu.innerHTML = header + `
         <div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1;">
-            ${videoBackground}
+            
+        
+        
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; height: 100%; width: 100%; padding-top: 2rem;">
                 <h1 class="text-4xl font-bold mb-8" style = "z-index: 2;">Bienvenido!</h1>
                 `

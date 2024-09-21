@@ -235,7 +235,8 @@ function createEnrrols() {
      
      courseList.innerHTML = header + `
          <div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1; height: calc(100vh - 112px);">
-             ${videoBackground}
+
+         
              <div style="z-index: 2; display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; width: 100%; height: 100%; padding-top: 2rem;">
                 ${goback}
                 <div class="course-list-container" style="width: 33.33%; max-width: 33.33%; overflow-y: auto; height: 100%; flex-shrink: 0;">

@@ -275,7 +275,7 @@ function createMainInterface() {
         </div>
         `
     main.innerHTML = header + `<div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1;">` 
-        + videoBackground + slider + chater + botomLine + `            
+        + /*videoBackground*/ + slider + chater + botomLine + `            
             ${state.showBillingMenu ? createBillingMenu() : ''}
             ${state.showConfigurationMenu ? createConfigurationMenu() : ''}
     `;
