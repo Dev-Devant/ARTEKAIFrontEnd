@@ -236,7 +236,7 @@ function createEnrrols() {
      courseList.innerHTML = header + `
          <div id="mainContent" class="flex flex-1 overflow-hidden relative" style="position: relative; z-index: 1; height: calc(100vh - 112px);">
 
-         
+
              <div style="z-index: 2; display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; width: 100%; height: 100%; padding-top: 2rem;">
                 ${goback}
                 <div class="course-list-container" style="width: 33.33%; max-width: 33.33%; overflow-y: auto; height: 100%; flex-shrink: 0;">
@@ -297,7 +297,7 @@ function createCourseOverview() {
     if (!course) return ''; 
 
     return `
-        <div class="course-details active" style="flex: 2; padding-left: 2rem; background-color: #042a2b; border: 2px solid #4bc6ff;">
+        <div class="course-details active" style="flex: 2; padding-left: 2rem; background-color: #042a2b; border: 2px solid #4bc6ff; max-height: 95%; overflow-y: auto;">
             <h3 class="text-xl font-semibold" style="color: white;">${course.title}</h3>
             <p style="color:" class = "text-gray-700">Id: ${course.ID}</p>
             <p style="color: white;font-size: 13px;">${course.description}</p>
@@ -309,17 +309,17 @@ function createCourseOverview() {
                 </svg>
                 <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; font-weight: bold; color: #4bc6ff;">${course.progress}%</span>
             </div>
-<button
-    id="loadCourseButton"
-    aria-label="Load Course"
-    style="float: right; background-color: #4bc6ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; gap: 8px;"
-    onclick="loadCourse();"
->
-    <svg id="courseIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
-        <path d="M5 12h14l-7-7-7 7zm0 8h14l-7-7-7 7z"/>
-    </svg>
-    Cargar
-</button>
+            <button
+                id="loadCourseButton"
+                aria-label="Load Course"
+                style="float: right; background-color: #4bc6ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; gap: 8px;"
+                onclick="loadCourse();"
+            >
+                <svg id="courseIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                    <path d="M5 12h14l-7-7-7 7zm0 8h14l-7-7-7 7z"/>
+                </svg>
+                Cargar
+            </button>
 
         </div>
     `;
