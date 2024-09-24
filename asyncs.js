@@ -181,7 +181,7 @@ async function getCourses() {
           const progress = (cnt/course.enrroledDAta.temas.length)*100
             const dataLoad = {
               'ID': course.ID,
-              'title': course.title,        
+              'title': formatMessage(course.title.toString()),        
               'tags': course.tags,         
               'description': formatMessage(course.description.toString()),
               'overview': course.overview,
@@ -339,6 +339,44 @@ async function resetPassrequest(email) {
   }
 }
 
+async function changePassRequest(password,newPassword,checkPassword) {
+  const url = server+"/api/changePass"; 
+  const SessionKey = localStorage.getItem('SessionKey')
+  const data = { SessionKey ,password,newPassword,checkPassword}; 
+  try {
+      const response = await postData(url, data);
+      if (response.message) {   
+        handleLogout()
+        return true
+      } else {
+        console.log("Error en la respuesta del servidor:", response.error);
+        return false
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+      return false
+  }
+}
+async function changenameRequest(newName) {
+  const url = server+"/api/changeName"; 
+  const SessionKey = localStorage.getItem('SessionKey')
+  const data = { SessionKey,newName}; 
+  try {
+      const response = await postData(url, data);
+      if (response.message) { 
+        
+        state.user.name = newName
+        handleLogout()
+        return true
+      } else {
+        console.log("Error en la respuesta del servidor:", response.error);
+        return false
+      }
+  } catch (error) {
+      console.error("Error al realizar la solicitud :", error);
+      return false
+  }
+}
 // Función para obtener los pagos usando POST
 async function getPayments() {
   const url = `${server}/mlPayments`; 

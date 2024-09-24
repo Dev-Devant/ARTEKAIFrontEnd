@@ -60,7 +60,7 @@ function createUserMenu() {
          </button>
     `
   return `<div class="absolute right-0 mt-2 w-48 bg-[#042a2b] rounded-md shadow-lg py-1 ring-1 ring-[#68696e] ring-opacity-5 z-50" style = "z-index : 2;">`
-     + certifyButton + logoutButton +
+     + configButton + certifyButton + logoutButton +
     `</div>`;
 }
 
@@ -191,11 +191,12 @@ function createBillingMenu() {
 }
 
 function createConfigurationMenu() {
-  return `
-        <div class="fixed inset-x-0 top-16 bottom-10 bg-[#08090A] bg-opacity-95 flex items-center justify-center z-50 overflow-y-auto">
+    const config = document.createElement('div');
+    config.innerHTML =`
+        <div style = "z-index: 2;" class="fixed inset-x-0 top-16 bottom-10 bg-[#08090A] bg-opacity-95 flex items-center justify-center z-50 overflow-y-auto">
             <div class="bg-[#042a2b] rounded-lg p-4 w-full max-w-3xl mx-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-[#4bc6ff]">Configuration</h2>
+                    <h2 class="text-xl font-bold text-[#4bc6ff]">Configuracion</h2>
                     <button id="closeConfiguration" class="text-[#bbbec6] hover:text-[#4bc6ff] transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
                     </button>
@@ -203,7 +204,7 @@ function createConfigurationMenu() {
                 
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-lg font-semibold text-[#4bc6ff] mb-2">Change Username</h3>
+                        <h3 class="text-lg font-semibold text-[#4bc6ff] mb-2">Cambiar nombre de usuario (publico para certificacion)</h3>
                         <div class="flex space-x-2">
                             <input
                                 type="text"
@@ -215,40 +216,48 @@ function createConfigurationMenu() {
                                 id="updateUsername"
                                 class="bg-[#4bc6ff] text-[#08090A] px-4 py-2 rounded text-sm hover:bg-[#2493d4] transition-colors"
                             >
-                                Update Username
+                                actualizar
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-lg font-semibold text-[#4bc6ff] mb-2">Change Password</h3>
+                        <h3 class="text-lg font-semibold text-[#4bc6ff] mb-2">cambiar constraseña</h3>
                         <div class="space-y-2">
                             <input
                                 type="password"
+                                id="currentPassword"
+                                placeholder="Contraseña actual"
+                                class="w-full px-3 py-2 bg-[#08090A] border border-[#68696e] rounded-md text-[#bbbec6] focus:outline-none focus:ring-[#4bc6ff] focus:border-[#4bc6ff]"
+                            />
+                            <input
+                                type="password"
                                 id="newPassword"
-                                placeholder="New Password"
+                                placeholder="Nueva contraseña"
                                 class="w-full px-3 py-2 bg-[#08090A] border border-[#68696e] rounded-md text-[#bbbec6] focus:outline-none focus:ring-[#4bc6ff] focus:border-[#4bc6ff]"
                             />
                             <input
                                 type="password"
                                 id="confirmPassword"
-                                placeholder="Confirm New Password"
+                                placeholder="Confirmar nueva contraseña"
                                 class="w-full px-3 py-2 bg-[#08090A] border border-[#68696e] rounded-md text-[#bbbec6] focus:outline-none focus:ring-[#4bc6ff] focus:border-[#4bc6ff]"
                             />
                             <button
                                 id="changePassword"
                                 class="bg-[#4bc6ff] text-[#08090A] px-4 py-2 rounded text-sm hover:bg-[#2493d4] transition-colors"
                             >
-                                Change Password
+                                Cambiar
                             </button>
                         </div>
-                    </div>
-
+                    </div>          
+                    ` +
+                    /*
                     <div>
                         <h3 class="text-lg font-semibold text-[#4bc6ff] mb-2">Audio Voice</h3>
-                        <div class="flex space-x-2">
+                        <div  class="flex space-x-2">
                             <select
                                 id="audioVoice"
+                                style = "z-index: 2;"
                                 class="flex-grow px-3 py-2 bg-[#08090A] border border-[#68696e] rounded-md text-[#bbbec6] focus:outline-none focus:ring-[#4bc6ff] focus:border-[#4bc6ff]"
                             >
                                 ${availableVoices
@@ -268,14 +277,45 @@ function createConfigurationMenu() {
                                 class="bg-[#4bc6ff] text-[#08090A] px-4 py-2 rounded text-sm hover:bg-[#2493d4] transition-colors flex items-center"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                Play Demo
+                                Demo
                             </button>
                         </div>
                     </div>
+                    /*/
+                    `
                 </div>
             </div>
-        </div>
-    `;
+        </div>`;
+    config.querySelector('#closeConfiguration').addEventListener('click', function(event) {
+        state.showConfigurationMenu = false
+        render()
+    });
+    config.querySelector('#changePassword').addEventListener('click', function(event) {
+        const actual = document.getElementById('currentPassword').value; 
+        const newPass = document.getElementById('newPassword').value; 
+        const conf = document.getElementById('confirmPassword').value; 
+        if(newPass.length < 6){
+            alert('debe tener almenos 6 caracteres')
+            return
+        }
+        if (newPass != conf ){
+            alert('Las contraseñas no coinciden')
+            return
+        }
+
+        changePassRequest(actual,newPass,conf)
+
+    });
+    config.querySelector('#updateUsername').addEventListener('click', function(event) {
+        const newName = document.getElementById('newUsername').value;
+        if (newName == state.user.name){
+            alert("Ya tienes ese nombre")
+            return 
+        }
+        changenameRequest(newName)
+    });
+
+  return config
 }
 
 function handleLogout() {

@@ -72,24 +72,29 @@ if (localStorage.getItem('SessionKey')) {
 } 
 function render() {
     const app = document.getElementById('app');
-    app.innerHTML = '';
-    
-       if (!state.isLoggedIn) {
+    app.innerHTML = '';    
+    if (!state.isLoggedIn) {
         app.appendChild(createLoginForm());
         return
     } 
-
-
     if (state.courseSelectorMode){
         app.appendChild(createEnrrols());
+        if (state.showConfigurationMenu){
+            app.appendChild(createConfigurationMenu())
+        }
         return
     }
-
     if (!state.mainMenuOpen){
         app.appendChild(createMainInterface());
+        if (state.showConfigurationMenu){
+            app.appendChild(createConfigurationMenu())
+        }
         return
     }else{
         app.appendChild(createMainMenu());
+        if (state.showConfigurationMenu){
+            app.appendChild(createConfigurationMenu())
+        }
         return
     }
     
@@ -152,24 +157,7 @@ document.addEventListener('click', (e) => {
         state.selectedOption = subscriptionOptions.find(option => option.id === parseInt(optionId));
         render();
     } 
-    if (e.target.id === 'updateUsername') {
-        const newUsername = document.getElementById('newUsername').value;
-        if (newUsername && newUsername !== state.user.name) {
-            state.user.name = newUsername;
-            render();
-        }
-    } 
-    if (e.target.id === 'changePassword') {
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        if (newPassword && newPassword === confirmPassword) {
-            console.log('Password changed successfully');
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
-        } else {
-            console.log('Passwords do not match');
-        }
-    } 
+
     if (e.target.id === 'audioVoice') {
         const voiceId = e.target.value;
         state.user.voice = voiceId;
